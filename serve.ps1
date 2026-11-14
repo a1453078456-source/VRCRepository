@@ -33,8 +33,14 @@ $MimeTypes = @{
   '.ico'  = 'image/x-icon'
   '.txt'  = 'text/plain; charset=utf-8'
   '.md'   = 'text/plain; charset=utf-8'
+  '.mp3'  = 'audio/mpeg'
+  '.m4a'  = 'audio/mp4'
+  '.flac' = 'audio/flac'
+  '.ogg'  = 'audio/ogg'
+  '.wav'  = 'audio/wav'
+  '.lrc'  = 'text/plain; charset=utf-8'
 }
-$ServeExt = @('.html', '.htm', '.css', '.js', '.mjs', '.json', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.ico', '.txt', '.md')
+$ServeExt = @('.html', '.htm', '.css', '.js', '.mjs', '.json', '.png', '.jpg', '.jpeg', '.webp', '.gif', '.svg', '.ico', '.txt', '.md', '.mp3', '.m4a', '.flac', '.ogg', '.wav', '.lrc')
 $ImageExt = @('.png', '.jpg', '.jpeg', '.webp', '.gif', '.bmp')
 
 function Write-Log {
@@ -51,7 +57,8 @@ function Send-Response {
     [string]$ContentType,
     [byte[]]$Body,
     [bool]$HeadOnly = $false,
-    [string]$Cache = 'no-cache'
+    [string]$Cache = 'no-cache',
+    [string]$ContentRange = ''
   )
   if ($null -eq $Body) { $Body = New-Object byte[] 0 }
   $header = "HTTP/1.1 $Status $StatusText`r`n" +
@@ -59,6 +66,8 @@ function Send-Response {
             "Server: CuteImage`r`n" +
             "Content-Type: $ContentType`r`n" +
             "Content-Length: $($Body.Length)`r`n" +
+            "Accept-Ranges: bytes`r`n" +
+            ($(if ($ContentRange) { "Content-Range: $ContentRange`r`n" } else { "" })) +
             "Cache-Control: $Cache`r`n" +
             "X-Content-Type-Options: nosniff`r`n" +
             "Connection: close`r`n`r`n"
@@ -346,13 +355,55 @@ while ($script:running) {
           $status = 403
         } else {
           $bytes = [System.IO.File]::ReadAllBytes($candidate)
+          $total = $bytes.Length
           $ctype = $MimeTypes[$ext]
           if (-not $ctype) { $ctype = 'application/octet-stream' }
           $cache = 'no-cache'
-          if ($ext -eq '.png' -or $ext -eq '.jpg' -or $ext -eq '.jpeg' -or $ext -eq '.webp' -or $ext -eq '.gif' -or $ext -eq '.svg' -or $ext -eq '.ico') {
+          if ($ext -eq '.png' -or $ext -eq '.jpg' -or $ext -eq '.jpeg' -or $ext -eq '.webp' -or $ext -eq '.gif' -or $ext -eq '.svg' -or $ext -eq '.ico' -or $ext -eq '.mp3' -or $ext -eq '.m4a' -or $ext -eq '.flac' -or $ext -eq '.ogg' -or $ext -eq '.wav') {
             $cache = 'public, max-age=600'
           }
-          Send-Response -Stream $stream -Status 200 -StatusText 'OK' -ContentType $ctype -Body $bytes -HeadOnly $headOnly -Cache $cache
+
+          # Range 支持：音频拖动进度、浏览器分段加载都靠它
+          $rangeHeader = $headers['range']
+          $handledRange = $false
+          if ($rangeHeader -and $total -gt 0 -and $rangeHeader -match '^bytes=(\d*)-(\d*)$') {
+            $fromRaw = $Matches[1]
+            $toRaw = $Matches[2]
+            $start = [int64]0
+            $end = [int64]($total - 1)
+            $ok = $true
+            if ($fromRaw -eq '') {
+              if ($toRaw -eq '') { $ok = $false }
+              else {
+                $suffix = [int64]$toRaw
+                if ($suffix -le 0) { $ok = $false }
+                else {
+                  if ($suffix -gt $total) { $suffix = $total }
+                  $start = $total - $suffix
+                }
+              }
+            } else {
+              $start = [int64]$fromRaw
+              if ($toRaw -ne '') { $end = [int64]$toRaw }
+              if ($end -ge $total) { $end = $total - 1 }
+              if ($start -gt $end -or $start -ge $total) { $ok = $false }
+            }
+            if (-not $ok) {
+              Send-Response -Stream $stream -Status 416 -StatusText 'Range Not Satisfiable' -ContentType 'text/plain; charset=utf-8' -Body (New-Object byte[] 0) -HeadOnly $headOnly -ContentRange "bytes */$total"
+              $status = 416
+              $handledRange = $true
+            } else {
+              $length = [int]($end - $start + 1)
+              $slice = New-Object byte[] $length
+              [System.Array]::Copy($bytes, $start, $slice, 0, $length)
+              Send-Response -Stream $stream -Status 206 -StatusText 'Partial Content' -ContentType $ctype -Body $slice -HeadOnly $headOnly -Cache $cache -ContentRange "bytes $start-$end/$total"
+              $status = 206
+              $handledRange = $true
+            }
+          }
+          if (-not $handledRange) {
+            Send-Response -Stream $stream -Status 200 -StatusText 'OK' -ContentType $ctype -Body $bytes -HeadOnly $headOnly -Cache $cache
+          }
         }
       }
     }

@@ -30,12 +30,16 @@ except Exception:
 
 ROOT = Path(__file__).resolve().parent.parent
 IMAGE_DIR = ROOT / "image"
+MUSIC_DIR = ROOT / "music"
 THUMB_DIR = ROOT / "thumbs"
 DATA_FILE = ROOT / "assets" / "data.js"
 EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"}
+AUDIO_EXTS = {".mp3", ".flac", ".m4a", ".ogg", ".wav", ".aac"}
+COVER_EXTS = (".jpg", ".jpeg", ".png", ".webp")
 VRC_RE = re.compile(
     r"^VRChat_(\d{4})-(\d{2})-(\d{2})_(\d{2})-(\d{2})-(\d{2})(?:\.(\d+))?_(\d+)x(\d+)$"
 )
+LRC_TIME = re.compile(r"\[(\d{1,2}):(\d{2})(?:[.:](\d{1,3}))?\]")
 
 
 def slugify(stem: str) -> str:
@@ -57,6 +61,67 @@ def parse_meta(stem: str):
 
 def hex_of(rgb):
     return "#%02X%02X%02X" % tuple(int(max(0, min(255, c))) for c in rgb[:3])
+
+
+def parse_lrc(path: Path):
+    """解析 LRC 歌词，跳过网易云 JSON 头信息行。"""
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8", errors="replace")
+    lines = []
+    for raw in text.splitlines():
+        raw = raw.strip()
+        if not raw or raw.startswith("{"):
+            continue
+        m = LRC_TIME.match(raw)
+        if not m:
+            continue
+        minutes, seconds, frac = int(m.group(1)), int(m.group(2)), m.group(3) or "0"
+        ms = int(frac.ljust(3, "0")[:3])
+        body = raw[m.end():].strip()
+        if not body:
+            continue
+        lines.append({"t": round(minutes * 60 + seconds + ms / 1000, 2), "s": body})
+    lines.sort(key=lambda item: item["t"])
+    return lines
+
+
+def scan_music():
+    """扫描 music/：音频、可选同名封面、可选同名 LRC。"""
+    if not MUSIC_DIR.is_dir():
+        return []
+    tracks = []
+    for path in sorted(p for p in MUSIC_DIR.iterdir() if p.is_file() and p.suffix.lower() in AUDIO_EXTS):
+        stem = path.stem
+        title, artist = stem, ""
+        if " - " in stem:
+            artist, title = (part.strip() for part in stem.split(" - ", 1))
+
+        cover = None
+        for ext in COVER_EXTS:
+            candidate = MUSIC_DIR / (stem + ext)
+            if candidate.exists():
+                with Image.open(candidate) as im:
+                    im = im.convert("RGB")
+                    im.thumbnail((160, 160), Image.LANCZOS)
+                    side = min(im.size)
+                    im = im.crop(((im.width - side) // 2, (im.height - side) // 2,
+                                  (im.width + side) // 2, (im.height + side) // 2))
+                    cover_name = f"music-{slugify(stem)}.jpg"
+                    im.save(THUMB_DIR / cover_name, "JPEG", quality=84, optimize=True)
+                    cover = f"thumbs/{cover_name}"
+                break
+
+        tracks.append({
+            "file": path.name,
+            "title": title,
+            "artist": artist,
+            "bytes": path.stat().st_size,
+            "cover": cover,
+            "lrc": parse_lrc(MUSIC_DIR / (stem + ".lrc")),
+        })
+        print(f"[music] {path.name}  cover={'yes' if cover else 'no'}  lrc={len(tracks[-1]['lrc'])} 行")
+    return tracks
 
 
 def analyze(img: Image.Image):
@@ -176,21 +241,23 @@ def main():
         print(f"[ok] {path.name}  ->  {thumb_path.name}  ({thumb_path.stat().st_size // 1024} KB)")
 
     items.sort(key=lambda i: i["timestamp"], reverse=True)
+    music = scan_music()
     payload = {
         "generatedAt": datetime.now().isoformat(timespec="seconds"),
         "count": len(items),
         "totalBytes": sum(i["bytes"] for i in items),
         "images": items,
+        "music": music,
     }
     body = (
         "/* CuteImage 画廊清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。\n"
-        f"   最后生成：{payload['generatedAt']} · 共 {payload['count']} 张 */\n"
+        f"   最后生成：{payload['generatedAt']} · 共 {payload['count']} 张图 · {len(music)} 首音乐 */\n"
         "window.CUTE_IMAGES = "
         + json.dumps(payload, ensure_ascii=False, indent=2)
         + ";\n"
     )
     DATA_FILE.write_text(body, encoding="utf-8")
-    print(f"\n共 {len(items)} 张，清单已写入 {DATA_FILE.relative_to(ROOT)}")
+    print(f"\n共 {len(items)} 张图、{len(music)} 首音乐，清单已写入 {DATA_FILE.relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

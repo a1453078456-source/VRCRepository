@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>CuteImage · 可爱图集</title>
-<meta name="description" content="CuteImage —— 一个从 image/ 文件夹自动读取图片的可爱风格图集网站。" />
+<meta name="description" content="CuteImage —— 一个从 image/ 文件夹自动读取图片的可爱风格图集网站，带背景音乐和阿尔都塞语录。" />
 <meta name="theme-color" content="#fdf8fb" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff9fbe'/%3E%3Cstop offset='1' stop-color='%239d8cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='21' cy='23' rx='5.4' ry='6.6'/%3E%3Cellipse cx='32' cy='18' rx='5.4' ry='6.6'/%3E%3Cellipse cx='43' cy='23' rx='5.4' ry='6.6'/%3E%3Cellipse cx='14' cy='34' rx='4.6' ry='5.6'/%3E%3Cpath d='M32 29c7 0 13 5.6 13 12.2C45 47 39.6 50 32 50s-13-3-13-8.8C19 34.6 25 29 32 29Z'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="stylesheet" href="assets/style.css" />
@@ -28,10 +28,13 @@
     </a>
     <nav class="nav-links" aria-label="页面导航">
       <a href="#gallery">图集</a>
-      <a href="#about">关于</a>
+      <a href="#quotes">语录</a>
     </nav>
     <div class="nav-tools">
       <span class="pill" id="countPill" title="图片数量">0 张</span>
+      <button class="icon-btn" id="folderBtn" type="button" aria-label="打开 image 文件夹" title="在资源管理器中打开图片文件夹" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2h9.2v9.5a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+      </button>
       <button class="icon-btn" id="themeBtn" type="button" aria-label="切换主题" title="切换明暗主题">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></g></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 0 1 10.4 3.8a8.4 8.4 0 1 0 9.8 9.8Z"/></svg>
@@ -122,27 +125,56 @@
     </div>
   </section>
 
-  <section class="about" id="about">
-    <div class="about-card">
-      <h2>这个网站是怎么来的</h2>
-      <p>
-        它是一组纯静态文件：<code>index.html</code> + <code>assets/</code> 里的样式和脚本。
-        图片没有被复制、也没有被压缩替换——网站只是按路径引用 <code>image/</code> 里的原图，
-        缩略图放在 <code>thumbs/</code> 里，保证网格加载够快。
-      </p>
-      <ul class="howto">
-        <li><b>打开：</b>双击根目录的 <code>启动网站.bat</code>，浏览器会自动打开图集。</li>
-        <li><b>新增图片：</b>直接把图片丢进 <code>image/</code>，刷新网页即可出现（走本地服务器时）。</li>
-        <li><b>更快一点：</b>需要缩略图时，双击 <code>重建缩略图.bat</code> 重新生成。</li>
-      </ul>
-      <div class="about-foot">
-        <span>静态站点 · 无框架 · 可离线使用</span>
-        <button class="btn btn-ghost btn-sm" id="folderBtn" type="button" hidden>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2h9.2v9.5a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
-          在文件夹中查看图片
-        </button>
-      </div>
+  <section class="quotes" id="quotes">
+    <header class="section-head">
+      <h2>阿尔都塞</h2>
+      <p class="section-sub">路易·阿尔都塞（Louis Althusser，1918—1990），法国马克思主义哲学家。留几句喜欢的话在这里。</p>
+    </header>
+
+    <div class="quote-wall">
+      <figure class="quote-card quote-featured">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>意识形态没有历史。</blockquote>
+        <figcaption>
+          <span class="quote-original">L’idéologie n’a pas d’histoire.</span>
+          <span class="quote-source">《意识形态与意识形态国家机器》· 1970</span>
+        </figcaption>
+      </figure>
+
+      <figure class="quote-card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>意识形态将个人询唤为主体。</blockquote>
+        <figcaption>
+          <span class="quote-source">《意识形态与意识形态国家机器》· 1970</span>
+        </figcaption>
+      </figure>
+
+      <figure class="quote-card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>人天生就是意识形态的动物。</blockquote>
+        <figcaption>
+          <span class="quote-source">《列宁与哲学》· 1969</span>
+        </figcaption>
+      </figure>
+
+      <figure class="quote-card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>历史是一个没有主体的过程。</blockquote>
+        <figcaption>
+          <span class="quote-source">《答约翰·刘易斯》· 1973</span>
+        </figcaption>
+      </figure>
+
+      <figure class="quote-card">
+        <span class="quote-mark" aria-hidden="true">“</span>
+        <blockquote>哲学归根到底是理论领域中的阶级斗争。</blockquote>
+        <figcaption>
+          <span class="quote-source">《列宁与哲学》· 1969</span>
+        </figcaption>
+      </figure>
     </div>
+
+    <p class="quote-note">引文采用中文译本的常见译法，仅作个人收藏。</p>
   </section>
 </main>
 
@@ -208,6 +240,51 @@
     </footer>
   </div>
 </div>
+
+<!-- 背景音乐播放器 -->
+<aside class="player" id="player" aria-label="背景音乐播放器" hidden>
+  <button class="player-mini" id="playerMini" type="button" aria-label="展开音乐播放器" title="展开音乐播放器">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <span class="mini-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+  </button>
+
+  <div class="player-card">
+    <div class="player-head">
+      <span class="player-art" id="playerArt">
+        <img id="trackCover" alt="" hidden />
+        <svg class="player-note" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <div class="player-meta">
+        <span class="player-title" id="trackTitle">—</span>
+        <span class="player-sub" id="trackArtist">背景音乐</span>
+      </div>
+      <button class="player-icon" id="playerCollapse" type="button" aria-label="收起播放器" title="收起">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9.5 6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="player-lyric" id="trackLyric" aria-live="off">背景音乐，轻轻地放着</div>
+
+    <input class="player-seek" id="playerSeek" type="range" min="0" max="1000" step="1" value="0" aria-label="播放进度" />
+    <div class="player-times"><span id="trackNow">0:00</span><span id="trackDur">0:00</span></div>
+
+    <div class="player-controls">
+      <button class="player-play" id="playerPlay" type="button" aria-label="播放背景音乐">
+        <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12Z"/></svg>
+        <svg class="i-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.4 5.6h2.9v12.8H8.4zM12.7 5.6h2.9v12.8h-2.9z"/></svg>
+      </button>
+      <div class="player-vol">
+        <button class="player-icon" id="playerMute" type="button" aria-label="静音" title="静音">
+          <svg class="i-vol" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.8v12.4L7.2 14.5H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M15.4 9.2a4 4 0 0 1 0 5.6M17.8 6.8a7.4 7.4 0 0 1 0 10.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <svg class="i-mute" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5h3.2L12 5.8v12.4L7.2 14.5H4z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m15.5 9.5 5 5M20.5 9.5l-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <input class="player-volume" id="playerVolume" type="range" min="0" max="100" step="1" value="20" aria-label="音量" />
+      </div>
+    </div>
+  </div>
+</aside>
+
+<audio id="bgm" preload="metadata"></audio>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

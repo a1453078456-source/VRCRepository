@@ -511,7 +511,7 @@
       if (item) {
         history.replaceState(null, '', `${base}#${encodeURIComponent(item.file)}`);
       } else if (location.hash) {
-        const target = /^#(gallery|about|top)$/.test(location.hash) ? location.hash : '';
+        const target = /^#(gallery|quotes|top)$/.test(location.hash) ? location.hash : '';
         history.replaceState(null, '', base + target);
       }
     } catch (_) { /* file:// 下部分浏览器不允许改地址栏，忽略即可 */ }
@@ -833,11 +833,228 @@
     }
   });
 
+  /* ---------- 背景音乐 ---------- */
+  const MUSIC_STORE = { volume: 'cuteimage:volume', on: 'cuteimage:musicOn', min: 'cuteimage:playerMin' };
+  const musicList = (window.CUTE_IMAGES && Array.isArray(window.CUTE_IMAGES.music))
+    ? window.CUTE_IMAGES.music.filter((m) => m && m.file)
+    : [];
+  const playerEl = $('#player');
+  const bgm = $('#bgm');
+  const seekEl = $('#playerSeek');
+  const volEl = $('#playerVolume');
+  const lyricEl = $('#trackLyric');
+  const playState = { index: 0, want: readJSON(MUSIC_STORE.on, true) !== false, volume: 0.2, lastNonZero: 0.2, lyricPos: -1 };
+  let fadeTimer = 0;
+  let lyricFade = 0;
+
+  function paintRange(input, ratio) {
+    const pct = Math.round(Math.max(0, Math.min(1, ratio)) * 100);
+    input.style.background = `linear-gradient(to right, var(--accent), var(--accent-2) ${pct}%, var(--line-strong) ${pct}%, var(--line-strong) 100%)`;
+  }
+
+  function fmtTime(sec) {
+    if (!isFinite(sec) || sec < 0) sec = 0;
+    return `${Math.floor(sec / 60)}:${pad2(Math.floor(sec % 60))}`;
+  }
+
+  function currentTrack() { return musicList[playState.index] || null; }
+
+  function setPlayingUI(on) {
+    playerEl.classList.toggle('is-playing', on);
+    $('#playerPlay').setAttribute('aria-label', on ? '暂停背景音乐' : '播放背景音乐');
+  }
+
+  function setNeedsTap(on) {
+    playerEl.classList.toggle('needs-tap', on);
+    if (on) lyricEl.textContent = '点一下播放，放点背景音乐';
+  }
+
+  function applyVolume(pct, persist) {
+    const value = Math.max(0, Math.min(100, Number(pct) || 0));
+    playState.volume = value / 100;
+    if (value > 0) playState.lastNonZero = playState.volume;
+    bgm.volume = playState.volume;
+    volEl.value = String(Math.round(value));
+    paintRange(volEl, value / 100);
+    playerEl.classList.toggle('is-muted', value === 0);
+    if (persist) writeJSON(MUSIC_STORE.volume, Math.round(value));
+  }
+
+  function fadeTo(target, ms) {
+    clearInterval(fadeTimer);
+    const from = bgm.volume;
+    const started = performance.now();
+    fadeTimer = setInterval(() => {
+      const k = Math.min(1, (performance.now() - started) / ms);
+      const v = from + (target - from) * k;
+      bgm.volume = v;
+      volEl.value = String(Math.round(v * 100));
+      paintRange(volEl, v);
+      if (k >= 1) clearInterval(fadeTimer);
+    }, 60);
+  }
+
+  function tryPlay(withFade) {
+    if (!bgm.paused) return;
+    const target = playState.volume;
+    if (withFade) {
+      bgm.volume = 0;
+      paintRange(volEl, 0);
+    }
+    const promise = bgm.play();
+    if (!promise || typeof promise.then !== 'function') {
+      setPlayingUI(true);
+      bgm.volume = target;
+      paintRange(volEl, target);
+      return;
+    }
+    promise.then(() => {
+      setPlayingUI(true);
+      setNeedsTap(false);
+      playState.want = true;
+      writeJSON(MUSIC_STORE.on, true);
+      if (withFade) fadeTo(target, 1600);
+      else {
+        bgm.volume = target;
+        paintRange(volEl, target);
+      }
+    }).catch(() => {
+      bgm.volume = target;
+      paintRange(volEl, target);
+      setPlayingUI(false);
+      setNeedsTap(true);
+    });
+  }
+
+  function pauseMusic() {
+    clearInterval(fadeTimer);
+    bgm.pause();
+    setPlayingUI(false);
+    playState.want = false;
+    writeJSON(MUSIC_STORE.on, false);
+  }
+
+  function updateLyric(t) {
+    const track = currentTrack();
+    if (!track || !Array.isArray(track.lrc) || !track.lrc.length) return;
+    const lrc = track.lrc;
+    let lo = 0;
+    let hi = lrc.length - 1;
+    let idx = -1;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      if (lrc[mid].t <= t) { idx = mid; lo = mid + 1; }
+      else hi = mid - 1;
+    }
+    if (idx === playState.lyricPos) return;
+    playState.lyricPos = idx;
+    const line = idx >= 0 ? lrc[idx].s : '♪ 前奏';
+    lyricEl.style.opacity = '0';
+    clearTimeout(lyricFade);
+    lyricFade = setTimeout(() => {
+      lyricEl.textContent = line;
+      lyricEl.style.opacity = '1';
+    }, 120);
+  }
+
+  function loadTrack(index, autoplay) {
+    const track = musicList[index];
+    if (!track) return;
+    playState.index = index;
+    playState.lyricPos = -1;
+    bgm.src = 'music/' + encodePath(track.file);
+    $('#trackTitle').textContent = track.title || track.file;
+    $('#trackArtist').textContent = track.artist ? `${track.artist} · 背景音乐` : '背景音乐';
+    const cover = $('#trackCover');
+    if (track.cover) {
+      cover.src = encodePath(track.cover);
+      cover.hidden = false;
+    } else {
+      cover.hidden = true;
+      cover.removeAttribute('src');
+    }
+    $('#trackNow').textContent = '0:00';
+    $('#trackDur').textContent = '0:00';
+    seekEl.value = '0';
+    paintRange(seekEl, 0);
+    lyricEl.textContent = (Array.isArray(track.lrc) && track.lrc.length) ? '♪ 轻轻放着' : '轻轻放着的背景音乐';
+    if (autoplay) tryPlay(true);
+  }
+
+  function setCollapsed(on) {
+    playerEl.classList.toggle('is-min', on);
+    document.body.classList.toggle('player-expanded', !on);
+    writeJSON(MUSIC_STORE.min, on);
+  }
+
+  function initPlayer() {
+    if (!musicList.length) return;
+    playerEl.hidden = false;
+
+    const savedVolume = Number(readJSON(MUSIC_STORE.volume, 20));
+    const volumePct = isFinite(savedVolume) ? Math.max(0, Math.min(100, savedVolume)) : 20;
+    applyVolume(volumePct, false);
+
+    const collapsed = readJSON(MUSIC_STORE.min, window.innerWidth < 640) === true;
+    setCollapsed(collapsed);
+
+    loadTrack(0, false);
+
+    bgm.addEventListener('loadedmetadata', () => {
+      $('#trackDur').textContent = fmtTime(bgm.duration);
+    });
+    bgm.addEventListener('timeupdate', () => {
+      if (!bgm.duration) return;
+      const ratio = bgm.currentTime / bgm.duration;
+      seekEl.value = String(Math.round(ratio * 1000));
+      paintRange(seekEl, ratio);
+      $('#trackNow').textContent = fmtTime(bgm.currentTime);
+      updateLyric(bgm.currentTime);
+    });
+    bgm.addEventListener('ended', () => {
+      loadTrack((playState.index + 1) % musicList.length, true);
+    });
+    bgm.addEventListener('play', () => setPlayingUI(true));
+    bgm.addEventListener('pause', () => setPlayingUI(false));
+
+    $('#playerPlay').addEventListener('click', () => {
+      if (bgm.paused) tryPlay(false);
+      else pauseMusic();
+    });
+    $('#playerMute').addEventListener('click', () => {
+      if (bgm.volume > 0) applyVolume(0, true);
+      else applyVolume(playState.lastNonZero * 100, true);
+    });
+    volEl.addEventListener('input', () => {
+      clearInterval(fadeTimer);
+      applyVolume(Number(volEl.value), true);
+    });
+    seekEl.addEventListener('input', () => {
+      if (!bgm.duration) return;
+      bgm.currentTime = (Number(seekEl.value) / 1000) * bgm.duration;
+      paintRange(seekEl, Number(seekEl.value) / 1000);
+    });
+    $('#playerCollapse').addEventListener('click', () => setCollapsed(true));
+    $('#playerMini').addEventListener('click', () => setCollapsed(false));
+
+    // 浏览器不允许自动播放时，等用户第一次操作再开始
+    const startOnGesture = (e) => {
+      if (e.target instanceof Node && playerEl.contains(e.target)) return;
+      if (playerEl.classList.contains('needs-tap') && playState.want !== false) tryPlay(false);
+      document.removeEventListener('pointerdown', startOnGesture, true);
+      document.removeEventListener('keydown', startOnGesture, true);
+    };
+    document.addEventListener('pointerdown', startOnGesture, true);
+    document.addEventListener('keydown', startOnGesture, true);
+
+    if (playState.want) setTimeout(() => tryPlay(true), 350);
+  }
+
   /* ---------- 深链接 ---------- */
   function openFromHash() {
     if (!location.hash || location.hash.length < 2) return;
     const file = decodeURIComponent(location.hash.slice(1));
-    if (/^(gallery|about|top)$/.test(file)) return;
+    if (/^(gallery|quotes|top)$/.test(file)) return;
     const index = state.view.findIndex((i) => i.file === file);
     if (index >= 0) openLightbox(index);
   }
@@ -848,6 +1065,7 @@
   /* ---------- 启动 ---------- */
   async function boot() {
     initTheme();
+    initPlayer();
     dom.folderBtn.hidden = true;
     try {
       await loadImages();
