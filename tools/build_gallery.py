@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-CuteImage 画廊素材生成器
-------------------------
-扫描 image/ 目录下的图片，生成：
+lll 的小站 · 图集素材生成器
+---------------------------
+扫描 material-library/image/ 里的图片，生成：
   * thumbs/<slug>.webp   网格用缩略图（宽 720，体积约为原图 3%）
-  * assets/data.js       画廊清单（尺寸 / 日期 / 大小 / 主色 / 模糊占位图）
-用法（在 CuteImage 目录下）：
+  * assets/data.js       图集清单（尺寸 / 日期 / 大小 / 主色 / 模糊占位图）
+同时扫描 material-library/music/ 生成播放列表。
+用法（在小站目录下）：
   python tools/build_gallery.py
 新增图片后重跑一次即可；不跑也能用（网站会自动回退到原图，只是加载更慢）。
 """
@@ -29,8 +30,9 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent.parent
-IMAGE_DIR = ROOT / "image"
-MUSIC_DIR = ROOT / "music"
+MATERIAL_DIR = ROOT / "material-library"
+IMAGE_DIR = MATERIAL_DIR / "image"
+MUSIC_DIR = MATERIAL_DIR / "music"
 THUMB_DIR = ROOT / "thumbs"
 DATA_FILE = ROOT / "assets" / "data.js"
 EXTS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".bmp"}
@@ -246,11 +248,13 @@ def main():
         "generatedAt": datetime.now().isoformat(timespec="seconds"),
         "count": len(items),
         "totalBytes": sum(i["bytes"] for i in items),
+        "imageBase": "material-library/image/",
+        "musicBase": "material-library/music/",
         "images": items,
         "music": music,
     }
     body = (
-        "/* CuteImage 画廊清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。\n"
+        "/* lll 的小站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。\n"
         f"   最后生成：{payload['generatedAt']} · 共 {payload['count']} 张图 · {len(music)} 首音乐 */\n"
         "window.CUTE_IMAGES = "
         + json.dumps(payload, ensure_ascii=False, indent=2)

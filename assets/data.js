@@ -1,10 +1,48 @@
-/* CuteImage 画廊清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。
-   最后生成：2026-11-14T16:01:16 · 共 11 张图 · 1 首音乐 */
+/* lll 的小站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。
+   最后生成：2026-11-18T22:52:21 · 共 10 张图 · 1 首音乐 */
 window.CUTE_IMAGES = {
-  "generatedAt": "2026-11-14T16:01:16",
-  "count": 11,
-  "totalBytes": 28004723,
+  "generatedAt": "2026-11-18T22:52:21",
+  "count": 10,
+  "totalBytes": 24158950,
+  "imageBase": "material-library/image/",
+  "musicBase": "material-library/music/",
   "images": [
+    {
+      "file": "VRChat_2026-11-18_00-54-43.227_1920x1080.png",
+      "stem": "VRChat_2026-11-18_00-54-43.227_1920x1080",
+      "title": "VRChat_2026-11-18_00-54-43.227_1920x1080",
+      "source": "VRChat",
+      "date": "2026-11-18T00:54:43",
+      "timestamp": 1794934483227,
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2766894,
+      "thumb": "thumbs/VRChat_2026-11-18_00-54-43_227_1920x1080.webp",
+      "lqip": "data:image/webp;base64,UklGRoAAAABXRUJQVlA4IHQAAAAQBACdASocABAAPsFOoEqnpCMhsAgA8BgJZQDG9CIj5Z32MAUTcYDzAAD+9sX2mrNhSGqLmJduM02k4wHiKv0Cg9Hw5yIpiAbb3JCykgfX28SjGLa3kW+i3ELT0GAGnYoZ74EbyNpOYFnDz6qnwzeYFocAAA==",
+      "colors": {
+        "dominant": "#ACA7AC",
+        "accent": "#E3D558",
+        "luma": 89.0
+      }
+    },
+    {
+      "file": "VRChat_2026-11-18_00-54-33.511_1920x1080.png",
+      "stem": "VRChat_2026-11-18_00-54-33.511_1920x1080",
+      "title": "VRChat_2026-11-18_00-54-33.511_1920x1080",
+      "source": "VRChat",
+      "date": "2026-11-18T00:54:33",
+      "timestamp": 1794934473511,
+      "width": 1920,
+      "height": 1080,
+      "bytes": 2926395,
+      "thumb": "thumbs/VRChat_2026-11-18_00-54-33_511_1920x1080.webp",
+      "lqip": "data:image/webp;base64,UklGRqIAAABXRUJQVlA4IJYAAACwBACdASocABAAPsFSoUqnpKMhsAgA8BgJYwDG9CIPdo2lmreHn784kDBD/t1QAP72xfagstXl3zfxSbSMM3jbeN1s+HiGH8E/zSC5jK1ejmYJ1BFAD6+Bnie8L128C6s9oTqJWUWXxb5Q/xvJ47owMhzLc2myj8n5S9huhxXUt3o5CVNH6LwT/VC0Q6SkeELBFYlcAAA=",
+      "colors": {
+        "dominant": "#353C28",
+        "accent": "#E3D658",
+        "luma": 93.7
+      }
+    },
     {
       "file": "VRChat_2026-11-10_01-05-40.794_1920x1080.png",
       "stem": "VRChat_2026-11-10_01-05-40.794_1920x1080",
@@ -114,24 +152,6 @@ window.CUTE_IMAGES = {
       }
     },
     {
-      "file": "VRChat_2026-08-30_01-33-09.008_1920x1080.png",
-      "stem": "VRChat_2026-08-30_01-33-09.008_1920x1080",
-      "title": "VRChat_2026-08-30_01-33-09.008_1920x1080",
-      "source": "VRChat",
-      "date": "2026-08-30T01:33:09",
-      "timestamp": 1788024789008,
-      "width": 1920,
-      "height": 1080,
-      "bytes": 2525546,
-      "thumb": "thumbs/VRChat_2026-08-30_01-33-09_008_1920x1080.webp",
-      "lqip": "data:image/webp;base64,UklGRpIAAABXRUJQVlA4IIYAAABwBACdASocABAAPsFQoksnpKMhsAgA8BgJYwC7AGlw9nMt26lE4oS4LGxe8AD+/o81eTX/t5uyyVSAkgnRT4iYcIsEr95AyCzeHr5fd3Q0dkwZmpkOqHp77oY3FHvQU9c2Z43OCy3B5ycpYC6tke/KFAKAa31VB58xQd6+Hn7ThUJhDoAAAA==",
-      "colors": {
-        "dominant": "#8B8389",
-        "accent": "#E38B58",
-        "luma": 75.7
-      }
-    },
-    {
       "file": "VRChat_2026-08-28_01-53-50.172_1920x1080.png",
       "stem": "VRChat_2026-08-28_01-53-50.172_1920x1080",
       "title": "VRChat_2026-08-28_01-53-50.172_1920x1080",
@@ -156,51 +176,15 @@ window.CUTE_IMAGES = {
       "source": "VRChat",
       "date": "2026-08-15T03:22:41",
       "timestamp": 1786735361015,
-      "width": 2048,
-      "height": 1440,
-      "bytes": 2549266,
+      "width": 1268,
+      "height": 716,
+      "bytes": 1287862,
       "thumb": "thumbs/VRChat_2026-08-15_03-22-41_015_2048x1440.webp",
-      "lqip": "data:image/webp;base64,UklGRqAAAABXRUJQVlA4IJQAAAAQBQCdASocABQAPsFWo00npKMiKAqo8BgJQBYdgiOLvooBSB3t68tHVxfS+3GAVXoAAPlpSesGdtBiwclERp1AhEqiEtxB3BVE79mX6O0tHwv1XzE+F+RddG7RhHuiiQWSeTIGdy+jDHq28qvFnLCG+GDmM3pUTEUTU/N0UQQZPxUUjZhZzaUWxShp7FOM5kbx9gAA",
+      "lqip": "data:image/webp;base64,UklGRn4AAABXRUJQVlA4IHIAAACwAwCdASocABAAPsFOoUqnpCMhsAgA8BgJQBOmUABbRjNUp6cIAAD+0PqWvoBuOVMVTGEdNPhbbccBuThPbO3KVN9v53HMCftTxE9j279zvGugvX3+z31a8ZQEwGvCG1IYso7dWQ5BG7Tyiry2+xP9aAA=",
       "colors": {
-        "dominant": "#FFFFFF",
+        "dominant": "#B0756E",
         "accent": "#E37858",
-        "luma": 152.6
-      }
-    },
-    {
-      "file": "VRChat_2026-08-08_01-30-26.092_2048x1440.png",
-      "stem": "VRChat_2026-08-08_01-30-26.092_2048x1440",
-      "title": "VRChat_2026-08-08_01-30-26.092_2048x1440",
-      "source": "VRChat",
-      "date": "2026-08-08T01:30:26",
-      "timestamp": 1786123826092,
-      "width": 2048,
-      "height": 1440,
-      "bytes": 2433206,
-      "thumb": "thumbs/VRChat_2026-08-08_01-30-26_092_2048x1440.webp",
-      "lqip": "data:image/webp;base64,UklGRrgAAABXRUJQVlA4IKwAAACwBACdASocABQAPsFOo0yno6MiMBgIAPAYCWUAqPQQ79u5sSC4FhQ4xjcvwDQAAP0AzUUcikOAOuB3DmCR9tjrKMq7y587JV50LmHXkpRx28QkuTsNBHx+H/8z/MMXhfi2HhpaEIEkzClDyqYf2Uke48hl51zO8zKnrg3xQgfD9TuxBRANYJXgJs3/yfDpWaVwubRcBFkV+wP1J6MW7qm/CfXKITYJjreJ7sQA",
-      "colors": {
-        "dominant": "#FFFFFF",
-        "accent": "#E39658",
-        "luma": 128.6
-      }
-    },
-    {
-      "file": "VRChat_2026-08-04_00-40-03.803_1920x1080.png",
-      "stem": "VRChat_2026-08-04_00-40-03.803_1920x1080",
-      "title": "VRChat_2026-08-04_00-40-03.803_1920x1080",
-      "source": "VRChat",
-      "date": "2026-08-04T00:40:03",
-      "timestamp": 1785775203803,
-      "width": 1920,
-      "height": 1080,
-      "bytes": 3318906,
-      "thumb": "thumbs/VRChat_2026-08-04_00-40-03_803_1920x1080.webp",
-      "lqip": "data:image/webp;base64,UklGRnwAAABXRUJQVlA4IHAAAABwBACdASocABAAPsFQoUqnpKMhsAgA8BgJZwC7AGlfUXI0eVfrGtnwcC8wAAD++vBM4ZLou7whPvjP+FLsa3Jegvye1gIc90FQ0Bei68VJweapHh78yeza2RYIZMyz0GiLXyKDtu73+xiS2bqXwAAA",
-      "colors": {
-        "dominant": "#3B3C42",
-        "accent": "#58B2E3",
-        "luma": 67.1
+        "luma": 110.8
       }
     }
   ],

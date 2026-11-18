@@ -1,5 +1,5 @@
 ﻿# ============================================================================
-#  CuteImage 本地预览服务器
+#  lll 的小站 · 本地预览服务器
 #  只绑定 127.0.0.1，对外不可见；不需要安装任何环境，Windows 自带 PowerShell 即可。
 #  用法：双击「启动网站.bat」，或手动执行：
 #        powershell -NoProfile -ExecutionPolicy Bypass -File serve.ps1
@@ -13,7 +13,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $Root      = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
-$ImageDir  = Join-Path $Root 'image'
+$ImageDir  = Join-Path $Root 'material-library\image'
 $ThumbDir  = Join-Path $Root 'thumbs'
 $RootFull  = [System.IO.Path]::GetFullPath($Root)
 
@@ -95,9 +95,9 @@ function Send-Json {
 function Send-NotFound {
   param($Stream, [bool]$HeadOnly)
   $html = @'
-<!doctype html><meta charset="utf-8"><title>404 · CuteImage</title>
+<!doctype html><meta charset="utf-8"><title>404 · lll 的小站</title>
 <style>body{font-family:system-ui,"Microsoft YaHei UI",sans-serif;background:#fbf5fa;color:#2a1f33;display:grid;place-items:center;height:100vh;margin:0;text-align:center}code{background:#f0e6f5;padding:2px 8px;border-radius:6px}a{color:#e0568a}</style>
-<div><h1 style="font-size:64px;margin:0">404</h1><p>这个地址没有东西，回<a href="/">图集首页</a>看看吧～</p></div>
+<div><h1 style="font-size:64px;margin:0">404</h1><p>这个地址没有东西，回<a href="/">小站首页</a>看看吧～</p></div>
 '@
   $bytes = [System.Text.Encoding]::UTF8.GetBytes($html)
   Send-Response -Stream $Stream -Status 404 -StatusText 'Not Found' -ContentType 'text/html; charset=utf-8' -Body $bytes -HeadOnly $HeadOnly
@@ -201,12 +201,12 @@ $listener = New-Object System.Net.Sockets.TcpListener ([System.Net.IPAddress]::L
 $listener.Start()
 $url = "http://127.0.0.1:$Port/"
 
-try { $Host.UI.RawUI.WindowTitle = "CuteImage · 本地图集" } catch {}
+try { $Host.UI.RawUI.WindowTitle = "lll 的小站 · 本地预览" } catch {}
 
 Clear-Host
 Write-Host ""
-Write-Host "   CuteImage" -ForegroundColor Magenta -NoNewline
-Write-Host "  ·  本地图集已启动" -ForegroundColor White
+Write-Host "   lll 的小站" -ForegroundColor Magenta -NoNewline
+Write-Host "  ·  本地预览已启动" -ForegroundColor White
 Write-Host "   ------------------------------------------" -ForegroundColor DarkGray
 Write-Host "   地址   " -ForegroundColor DarkGray -NoNewline
 Write-Host $url -ForegroundColor Cyan

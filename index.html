@@ -3,13 +3,20 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>CuteImage · 可爱图集</title>
-<meta name="description" content="CuteImage —— 一个从 image/ 文件夹自动读取图片的可爱风格图集网站，带背景音乐和阿尔都塞语录。" />
+<title>lll 的小站 · 欢迎</title>
+<meta name="description" content="lll 的小站：一份个人简介、一册 VRChat 游戏图集、几篇文章，还有几句喜欢的阿尔都塞。" />
 <meta name="theme-color" content="#fdf8fb" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff9fbe'/%3E%3Cstop offset='1' stop-color='%239d8cff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='21' cy='23' rx='5.4' ry='6.6'/%3E%3Cellipse cx='32' cy='18' rx='5.4' ry='6.6'/%3E%3Cellipse cx='43' cy='23' rx='5.4' ry='6.6'/%3E%3Cellipse cx='14' cy='34' rx='4.6' ry='5.6'/%3E%3Cpath d='M32 29c7 0 13 5.6 13 12.2C45 47 39.6 50 32 50s-13-3-13-8.8C19 34.6 25 29 32 29Z'/%3E%3C/g%3E%3C/svg%3E" />
 <link rel="stylesheet" href="assets/style.css" />
+<script>
+  /* 尽早套用记住的主题，避免闪一下白 */
+  try {
+    var savedTheme = JSON.parse(localStorage.getItem('cuteimage:theme'));
+    if (savedTheme === 'dark' || savedTheme === 'light') document.documentElement.setAttribute('data-theme', savedTheme);
+  } catch (e) {}
+</script>
 </head>
-<body>
+<body class="is-welcome">
 
 <div class="aurora" aria-hidden="true">
   <span class="blob b1"></span>
@@ -18,173 +25,198 @@
   <span class="grain"></span>
 </div>
 
-<header class="nav">
-  <div class="nav-inner">
-    <a class="brand" href="#top" aria-label="CuteImage 首页">
+<!-- ============================================================ 欢迎页 -->
+<section class="welcome" id="welcome" aria-labelledby="welcomeTitle">
+  <header class="welcome-top">
+    <span class="brand brand-static">
       <span class="brand-mark">
         <svg viewBox="0 0 64 64" aria-hidden="true"><g fill="currentColor"><ellipse cx="21" cy="23" rx="5.4" ry="6.6"/><ellipse cx="32" cy="18" rx="5.4" ry="6.6"/><ellipse cx="43" cy="23" rx="5.4" ry="6.6"/><ellipse cx="14" cy="34" rx="4.6" ry="5.6"/><path d="M32 29c7 0 13 5.6 13 12.2C45 47 39.6 50 32 50s-13-3-13-8.8C19 34.6 25 29 32 29Z"/></g></svg>
       </span>
-      <span class="brand-text">Cute<span>Image</span></span>
-    </a>
-    <nav class="nav-links" aria-label="页面导航">
-      <a href="#gallery">图集</a>
-      <a href="#quotes">语录</a>
-    </nav>
-    <div class="nav-tools">
-      <span class="pill" id="countPill" title="图片数量">0 张</span>
-      <button class="icon-btn" id="folderBtn" type="button" aria-label="打开 image 文件夹" title="在资源管理器中打开图片文件夹" hidden>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2h9.2v9.5a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
-      </button>
-      <button class="icon-btn" id="themeBtn" type="button" aria-label="切换主题" title="切换明暗主题">
+      <span class="brand-text">lll<span> 的小站</span></span>
+    </span>
+    <div class="welcome-tools">
+      <button class="icon-btn js-theme" type="button" aria-label="切换主题" title="切换明暗主题">
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></g></svg>
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 0 1 10.4 3.8a8.4 8.4 0 1 0 9.8 9.8Z"/></svg>
       </button>
     </div>
-  </div>
-</header>
+  </header>
 
-<main id="top">
-  <section class="hero">
-    <div class="hero-copy">
-      <p class="eyebrow"><span class="dot"></span> 个人图集 · VRChat 截图</p>
-      <h1>把可爱的<br /><em>每一帧</em>都收进来。</h1>
+  <div class="welcome-inner">
+    <div class="welcome-copy">
+      <p class="eyebrow"><span class="dot"></span> 私人小站 · 欢迎光临</p>
+      <h1 id="welcomeTitle">你好，<br />我是<em>lll</em>。</h1>
       <p class="lede">
-        一个安安静静的小图集，只做一件事：把 <code>image/</code> 文件夹里的画面，
-        漂漂亮亮地摆出来。
+        欢迎来到我的小站。这里有我的一份个人简介、一册 VRChat 游戏图集、
+        几篇慢慢写下的文章，还有一个关于「我能做什么」的小答案。
       </p>
-
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#gallery">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 15.5 9 10l4 4.5 3-2.5 4 3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-          开始看图
+      <div class="welcome-actions">
+        <a class="btn btn-primary btn-lg" href="#/profile" id="enterBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          查看 lll 的个人简介
         </a>
-        <button class="btn btn-ghost" id="shuffleBtn" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h4l8 12h4M4 18h4L16 6h4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m17.5 3.5 2.5 2.5-2.5 2.5M17.5 15.5 20 18l-2.5 2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
-          随机一张
-        </button>
       </div>
-
-      <dl class="stats" id="stats">
-        <div class="stat">
-          <dt>图片</dt>
-          <dd><span data-stat="count">—</span><small>张</small></dd>
-        </div>
-        <div class="stat">
-          <dt>体积</dt>
-          <dd><span data-stat="size">—</span></dd>
-        </div>
-        <div class="stat">
-          <dt>跨度</dt>
-          <dd><span data-stat="span">—</span></dd>
-        </div>
-      </dl>
+      <p class="welcome-hint">点开以后，音乐也会跟着轻轻响起来。</p>
+      <p class="welcome-rooms" aria-hidden="true">
+        <span>个人简介</span><i>·</i><span>游戏图集</span><i>·</i><span>我的文章</span><i>·</i><span>我能做什么的</span>
+      </p>
     </div>
 
-    <div class="hero-art" aria-hidden="true">
-      <div class="stack" id="heroStack"></div>
+    <div class="welcome-art" aria-hidden="true">
+      <div class="stack" id="welcomeStack"></div>
       <div class="sparkle s1">✦</div>
       <div class="sparkle s2">✦</div>
       <div class="sparkle s3">✧</div>
     </div>
-  </section>
+  </div>
 
-  <section class="gallery" id="gallery">
-    <header class="section-head">
-      <h2>图集</h2>
-      <p class="section-sub">点开任意一张，可以看大图、下载原图，或者让它们自动播放。</p>
-    </header>
+  <footer class="welcome-quote" aria-live="off">
+    <span class="welcome-quote-mark" aria-hidden="true">“</span>
+    <div class="welcome-quote-body">
+      <p class="welcome-quote-text" id="welcomeQuote">意识形态没有历史。</p>
+      <p class="welcome-quote-src" id="welcomeQuoteSrc">路易·阿尔都塞 ·《意识形态与意识形态国家机器》· 1970</p>
+    </div>
+  </footer>
+</section>
 
-    <div class="toolbar">
-      <div class="search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <input id="search" type="search" placeholder="搜索文件名或日期，例如 11-10" autocomplete="off" aria-label="搜索图片" />
-        <kbd>/</kbd>
-      </div>
+<!-- ============================================================ 站内 -->
+<div class="app" id="app" hidden>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#/profile" aria-label="lll 的小站 · 回到个人简介">
+        <span class="brand-mark">
+          <svg viewBox="0 0 64 64" aria-hidden="true"><g fill="currentColor"><ellipse cx="21" cy="23" rx="5.4" ry="6.6"/><ellipse cx="32" cy="18" rx="5.4" ry="6.6"/><ellipse cx="43" cy="23" rx="5.4" ry="6.6"/><ellipse cx="14" cy="34" rx="4.6" ry="5.6"/><path d="M32 29c7 0 13 5.6 13 12.2C45 47 39.6 50 32 50s-13-3-13-8.8C19 34.6 25 29 32 29Z"/></g></svg>
+        </span>
+        <span class="brand-text">lll<span> 的小站</span></span>
+      </a>
 
-      <div class="toolbar-right">
-        <div class="seg" role="group" aria-label="排序">
-          <button type="button" data-sort="new" class="is-on">最新</button>
-          <button type="button" data-sort="old">最早</button>
-          <button type="button" data-sort="name">文件名</button>
-        </div>
-        <button class="chip chip-fav" id="favBtn" type="button" aria-pressed="false">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.2-4.4-7.2-9.4A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.2 3C19.2 15.6 12 20 12 20Z"/></svg>
-          收藏 <span id="favCount">0</span>
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="#/profile" data-nav="profile">个人简介</a>
+        <a href="#/gallery" data-nav="gallery">游戏图集</a>
+        <a href="#/essays" data-nav="essays">我的文章</a>
+        <a href="#/can" data-nav="can">我能做什么的</a>
+      </nav>
+
+      <div class="nav-tools">
+        <span class="pill" id="countPill" title="图集里的图片数量">0 张</span>
+        <button class="icon-btn" id="folderBtn" type="button" aria-label="打开图片文件夹" title="在资源管理器中打开图片文件夹" hidden>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h6l1.8 2h9.2v9.5a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18Z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg>
+        </button>
+        <button class="icon-btn js-theme" type="button" aria-label="切换主题" title="切换明暗主题">
+          <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><g stroke-linecap="round"><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></g></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 13.6A8.4 8.4 0 0 1 10.4 3.8a8.4 8.4 0 1 0 9.8 9.8Z"/></svg>
+        </button>
+        <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="展开导航菜单" aria-expanded="false" title="导航">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>
         </button>
       </div>
     </div>
+  </header>
 
-    <div class="chips" id="chips" role="group" aria-label="按月份筛选"></div>
+  <div class="read-progress" id="readProgress" aria-hidden="true" hidden><i></i></div>
 
-    <div class="grid" id="grid" aria-live="polite"></div>
+  <main id="main">
+    <!-- 个人简介（由 app.js 渲染） -->
+    <section class="view" id="view-profile" aria-labelledby="profileTitle" hidden></section>
 
-    <div class="empty" id="empty" hidden>
-      <div class="empty-face">( ˘•ω•˘ )</div>
-      <p id="emptyText">没有找到匹配的图片，换个关键词试试～</p>
-      <button class="btn btn-ghost" id="resetBtn" type="button">清除筛选</button>
-    </div>
-  </section>
+    <!-- 游戏图集 -->
+    <section class="view" id="view-gallery" aria-labelledby="galleryTitle" hidden>
+      <header class="page-head gallery-head">
+        <p class="eyebrow"><span class="dot"></span> 游戏图集 · GALLERY</p>
+        <h1 id="galleryTitle">游戏<em>图集</em></h1>
+        <p class="lede">VRChat 里的一些画面，按时间收好。点开任意一张，可以看大图、下载原图，或者让它们自动播放。</p>
+        <dl class="stats" id="stats">
+          <div class="stat">
+            <dt>图片</dt>
+            <dd><span data-stat="count">—</span><small>张</small></dd>
+          </div>
+          <div class="stat">
+            <dt>体积</dt>
+            <dd><span data-stat="size">—</span></dd>
+          </div>
+          <div class="stat">
+            <dt>跨度</dt>
+            <dd><span data-stat="span">—</span></dd>
+          </div>
+          <div class="stat">
+            <dt>最近</dt>
+            <dd><span data-stat="latest">—</span></dd>
+          </div>
+        </dl>
+      </header>
 
-  <section class="quotes" id="quotes">
-    <header class="section-head">
-      <h2>阿尔都塞</h2>
-      <p class="section-sub">路易·阿尔都塞（Louis Althusser，1918—1990），法国马克思主义哲学家。留几句喜欢的话在这里。</p>
-    </header>
+      <div class="gallery" id="gallery">
+        <div class="toolbar">
+          <div class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            <input id="search" type="search" placeholder="搜索文件名或日期，例如 11-10" autocomplete="off" aria-label="搜索图片" />
+            <kbd>/</kbd>
+          </div>
 
-    <div class="quote-wall">
-      <figure class="quote-card quote-featured">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>意识形态没有历史。</blockquote>
-        <figcaption>
-          <span class="quote-original">L’idéologie n’a pas d’histoire.</span>
-          <span class="quote-source">《意识形态与意识形态国家机器》· 1970</span>
-        </figcaption>
-      </figure>
+          <div class="toolbar-right">
+            <div class="seg" role="group" aria-label="排序">
+              <button type="button" data-sort="new" class="is-on">最新</button>
+              <button type="button" data-sort="old">最早</button>
+              <button type="button" data-sort="name">文件名</button>
+            </div>
+            <button class="chip chip-fav" id="favBtn" type="button" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7.2-4.4-7.2-9.4A4.1 4.1 0 0 1 12 7.6a4.1 4.1 0 0 1 7.2 3C19.2 15.6 12 20 12 20Z"/></svg>
+              收藏 <span id="favCount">0</span>
+            </button>
+          </div>
+        </div>
 
-      <figure class="quote-card">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>意识形态将个人询唤为主体。</blockquote>
-        <figcaption>
-          <span class="quote-source">《意识形态与意识形态国家机器》· 1970</span>
-        </figcaption>
-      </figure>
+        <div class="chips" id="chips" role="group" aria-label="按月份筛选"></div>
 
-      <figure class="quote-card">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>人天生就是意识形态的动物。</blockquote>
-        <figcaption>
-          <span class="quote-source">《列宁与哲学》· 1969</span>
-        </figcaption>
-      </figure>
+        <div class="grid" id="grid" aria-live="polite"></div>
 
-      <figure class="quote-card">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>历史是一个没有主体的过程。</blockquote>
-        <figcaption>
-          <span class="quote-source">《答约翰·刘易斯》· 1973</span>
-        </figcaption>
-      </figure>
+        <div class="empty" id="empty" hidden>
+          <div class="empty-face">( ˘•ω•˘ )</div>
+          <p id="emptyText">没有找到匹配的图片，换个关键词试试～</p>
+          <button class="btn btn-ghost" id="resetBtn" type="button">清除筛选</button>
+        </div>
+      </div>
+    </section>
 
-      <figure class="quote-card">
-        <span class="quote-mark" aria-hidden="true">“</span>
-        <blockquote>哲学归根到底是理论领域中的阶级斗争。</blockquote>
-        <figcaption>
-          <span class="quote-source">《列宁与哲学》· 1969</span>
-        </figcaption>
-      </figure>
-    </div>
+    <!-- 我的文章（列表） -->
+    <section class="view" id="view-essays" aria-labelledby="essaysTitle" hidden></section>
 
-    <p class="quote-note">引文采用中文译本的常见译法，仅作个人收藏。</p>
-  </section>
-</main>
+    <!-- 一篇文章（阅读页） -->
+    <section class="view" id="view-essay" aria-labelledby="essayTitle" hidden></section>
 
-<footer class="foot">
-  <span>CuteImage · 一个自己用的可爱图集</span>
-  <span class="foot-dots">·</span>
-  <span>图片来自 <code>image/</code></span>
-</footer>
+    <!-- 我能做什么的 -->
+    <section class="view can" id="view-can" aria-labelledby="canTitle" hidden>
+      <div class="can-inner">
+        <p class="eyebrow"><span class="dot"></span> 我能做什么的 · WHAT I CAN DO</p>
+        <figure class="can-statement">
+          <span class="can-mark" aria-hidden="true">“</span>
+          <blockquote id="canTitle">我什么也能做，请相信我！（<em>就是这么自信</em>，哼哼）</blockquote>
+          <span class="can-mark end" aria-hidden="true">”</span>
+        </figure>
+        <div class="can-actions">
+          <a class="btn btn-primary" href="#/profile">回个人简介</a>
+          <a class="btn btn-ghost" href="#/gallery">看看游戏图集</a>
+        </div>
+        <div class="can-sparkles" aria-hidden="true">
+          <span class="sparkle s1">✦</span>
+          <span class="sparkle s2">✧</span>
+          <span class="sparkle s3">✦</span>
+          <span class="sparkle s4">✧</span>
+        </div>
+      </div>
+    </section>
+  </main>
 
-<!-- 大图查看器 -->
+  <footer class="foot">
+    <span>lll 的小站 · 只属于 lll 的一小块地方</span>
+    <span class="foot-dots">·</span>
+    <span>图片放在 <code>material-library/image/</code></span>
+    <span class="foot-dots">·</span>
+    <a class="foot-link" href="#/">回欢迎页</a>
+  </footer>
+</div>
+
+<!-- ============================================================ 大图查看器 -->
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="图片查看器" hidden>
   <div class="lb-backdrop" id="lbBackdrop"></div>
   <div class="lb-shell">
@@ -203,7 +235,7 @@
         <button class="icon-btn" id="lbDownload" type="button" aria-label="下载原图" title="下载原图">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v10m0 0 4-4m-4 4-4-4M5 19h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </button>
-        <button class="icon-btn" id="lbLink" type="button" aria-label="复制链接" title="复制链接">
+        <button class="icon-btn" id="lbLink" type="button" aria-label="复制链接" title="复制当前图片链接">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a3.5 3.5 0 0 0 5 0l3-3a3.5 3.5 0 0 0-5-5l-1 1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M14 10a3.5 3.5 0 0 0-5 0l-3 3a3.5 3.5 0 0 0 5 5l1-1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
         </button>
         <button class="icon-btn is-close" id="lbClose" type="button" aria-label="关闭" title="关闭 (Esc)">
@@ -241,7 +273,7 @@
   </div>
 </div>
 
-<!-- 背景音乐播放器 -->
+<!-- ============================================================ 背景音乐播放器 -->
 <aside class="player" id="player" aria-label="背景音乐播放器" hidden>
   <button class="player-mini" id="playerMini" type="button" aria-label="展开音乐播放器" title="展开音乐播放器">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
@@ -285,10 +317,14 @@
 </aside>
 
 <audio id="bgm" preload="metadata"></audio>
-
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<noscript>
+  <div class="noscript">这个小站需要 JavaScript 才能翻页，麻烦在浏览器设置里打开一下。</div>
+</noscript>
+
 <script src="assets/data.js"></script>
+<script src="assets/content.js"></script>
 <script src="assets/app.js"></script>
 </body>
 </html>
