@@ -134,8 +134,11 @@ def parse_essay(path: Path) -> dict:
         if not text:
             continue
         style = para.style.name if para.style is not None else ""
-        if style.lower().startswith("heading") and not title:
-            title = text
+        if style.lower().startswith("heading"):
+            if not title:
+                title = text
+            else:
+                blocks.append({"t": "h3", "text": text})
             continue
         if text.startswith("写于") or text.startswith("作于"):
             note = text

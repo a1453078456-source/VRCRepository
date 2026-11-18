@@ -14,7 +14,7 @@
   const pad2 = (n) => String(n).padStart(2, '0');
   const FILE_EXT = /\.(png|jpe?g|webp|gif|bmp)$/i;
   const STORE = { theme: 'cuteimage:theme', favs: 'cuteimage:favs' };
-  const MUSIC_STORE = { volume: 'cuteimage:volume', on: 'cuteimage:musicOn', min: 'cuteimage:playerMin' };
+  const MUSIC_STORE = { volume: 'cuteimage:volume' };
 
   const esc = (value) => String(value == null ? '' : value)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -82,14 +82,9 @@
 
   const QUOTES = [
     {
-      text: '意识形态没有历史。',
-      original: 'L’idéologie n’a pas d’histoire.',
-      source: '《意识形态与意识形态国家机器》· 1970'
-    },
-    { text: '意识形态将个人询唤为主体。', source: '《意识形态与意识形态国家机器》· 1970' },
-    { text: '人天生就是意识形态的动物。', source: '《列宁与哲学》· 1969' },
-    { text: '历史是一个没有主体的过程。', source: '《答约翰·刘易斯》· 1973' },
-    { text: '哲学归根到底是理论领域中的阶级斗争。', source: '《列宁与哲学》· 1969' }
+      text: '我们总是要不断地前行，然后抵达我们观念中的目的地，尽管我们为此会迂回许多次。',
+      source: 'lll'
+    }
   ];
 
   const ICONS = {
@@ -330,7 +325,7 @@
     clearTimeout(paintQuote.timer);
     paintQuote.timer = setTimeout(() => {
       dom.welcomeQuote.textContent = quote.text;
-      dom.welcomeQuoteSrc.textContent = `路易·阿尔都塞 · ${quote.source}`;
+      dom.welcomeQuoteSrc.textContent = quote.source;
       dom.welcomeQuoteWrap.classList.remove('is-swapping');
     }, 220);
   }
@@ -340,6 +335,7 @@
     if (quoteIndex < 0) quoteIndex = Math.floor(Math.random() * QUOTES.length);
     else quoteIndex = (quoteIndex + 1) % QUOTES.length;
     paintQuote(quoteIndex);
+    if (QUOTES.length < 2) return;
     quoteTimer = setInterval(() => {
       quoteIndex = (quoteIndex + 1) % QUOTES.length;
       paintQuote(quoteIndex);
@@ -432,7 +428,7 @@
           <span class="quote-mark" aria-hidden="true">“</span>
           <blockquote>${esc(quote.text)}</blockquote>
           <figcaption>
-            <span class="quote-original">${esc(quote.original || '')}</span>
+            ${quote.original ? `<span class="quote-original">${esc(quote.original)}</span>` : ''}
             <span class="quote-source">${esc(quote.source)}</span>
           </figcaption>
         </figure>`;
@@ -474,11 +470,10 @@
 
       <section class="profile-section quotes" aria-labelledby="quotesTitle">
         <header class="section-head">
-          <h2 id="quotesTitle">阿尔都塞</h2>
-          <p class="section-sub">路易·阿尔都塞（Louis Althusser，1918—1990），法国马克思主义哲学家。留几句喜欢的话在这里。</p>
+          <h2 id="quotesTitle">我的名言</h2>
+          <p class="section-sub">留一句给自己的话。</p>
         </header>
         <div class="quote-wall">${quotes}</div>
-        <p class="quote-note">引文采用中文译本的常见译法，仅作个人收藏。</p>
       </section>`;
   }
 
@@ -970,7 +965,7 @@
       <header class="page-head">
         <p class="eyebrow"><span class="dot"></span> 我的文章 · ESSAYS</p>
         <h1 id="essaysTitle">我的<em>文章</em></h1>
-        <p class="lede">一些关于世界、穷人和经济学的想法。慢慢写，慢慢改；想清楚了，就放在这里。</p>
+        <p class="lede">一些关于世界、穷人、爱和经济的想法。慢慢写，慢慢改；想清楚了，就放在这里。</p>
       </header>
       <div class="essays-wrap">
         <div class="essay-list">${cards || '<p class="section-sub">文章还在写，过阵子再来看看。</p>'}</div>
@@ -1191,10 +1186,6 @@
   }
 
   /* ---------- 事件 ---------- */
-  function unlockMusic() {
-    if (musicList.length && bgm.paused) tryPlay(false);
-  }
-
   function initEvents() {
     dom.search.addEventListener('input', () => {
       state.query = dom.search.value;
@@ -1293,10 +1284,6 @@
       if (e.target.closest('a')) closeMobileMenu();
     });
 
-    /* 进入小站 */
-    const enterBtn = $('#enterBtn');
-    if (enterBtn) enterBtn.addEventListener('click', () => { unlockMusic(); });
-
     /* 图集预览：点开某张就跳到图集里的大图 */
     document.addEventListener('click', (e) => {
       const peek = e.target.closest('.peek-card');
@@ -1390,7 +1377,7 @@
   const seekEl = $('#playerSeek');
   const volEl = $('#playerVolume');
   const lyricEl = $('#trackLyric');
-  const playState = { index: 0, want: readJSON(MUSIC_STORE.on, true) !== false, volume: 0.2, lastNonZero: 0.2, lyricPos: -1 };
+  const playState = { index: 0, volume: 0.2, lastNonZero: 0.2, lyricPos: -1 };
   let fadeTimer = 0;
   let lyricFade = 0;
 
@@ -1406,10 +1393,6 @@
   function setPlayingUI(on) {
     playerEl.classList.toggle('is-playing', on);
     $('#playerPlay').setAttribute('aria-label', on ? '暂停背景音乐' : '播放背景音乐');
-  }
-  function setNeedsTap(on) {
-    playerEl.classList.toggle('needs-tap', on);
-    if (on) lyricEl.textContent = '点一下播放，放点背景音乐';
   }
   function applyVolume(pct, persist) {
     const value = Math.max(0, Math.min(100, Number(pct) || 0));
@@ -1450,9 +1433,6 @@
     }
     promise.then(() => {
       setPlayingUI(true);
-      setNeedsTap(false);
-      playState.want = true;
-      writeJSON(MUSIC_STORE.on, true);
       if (withFade) fadeTo(target, 1600);
       else {
         bgm.volume = target;
@@ -1462,15 +1442,13 @@
       bgm.volume = target;
       paintRange(volEl, target);
       setPlayingUI(false);
-      setNeedsTap(true);
+      toast('播放没成功，再点一次试试～');
     });
   }
   function pauseMusic() {
     clearInterval(fadeTimer);
     bgm.pause();
     setPlayingUI(false);
-    playState.want = false;
-    writeJSON(MUSIC_STORE.on, false);
   }
   function updateLyric(t) {
     const track = currentTrack();
@@ -1520,7 +1498,6 @@
   function setCollapsed(on) {
     playerEl.classList.toggle('is-min', on);
     document.body.classList.toggle('player-expanded', !on);
-    writeJSON(MUSIC_STORE.min, on);
   }
   function initPlayer() {
     if (!musicList.length) return;
@@ -1530,8 +1507,8 @@
     const volumePct = isFinite(savedVolume) ? Math.max(0, Math.min(100, savedVolume)) : 20;
     applyVolume(volumePct, false);
 
-    const collapsed = readJSON(MUSIC_STORE.min, window.innerWidth < 640) === true;
-    setCollapsed(collapsed);
+    // 播放器默认收成左下角的小圆钮，绝不自动展开、也不会自动播放
+    setCollapsed(true);
 
     loadTrack(0, false);
 
@@ -1547,7 +1524,12 @@
       updateLyric(bgm.currentTime);
     });
     bgm.addEventListener('ended', () => {
-      loadTrack((playState.index + 1) % musicList.length, true);
+      if (musicList.length > 1) {
+        loadTrack((playState.index + 1) % musicList.length, true);
+        return;
+      }
+      bgm.currentTime = 0;
+      setPlayingUI(false);
     });
     bgm.addEventListener('play', () => setPlayingUI(true));
     bgm.addEventListener('pause', () => setPlayingUI(false));
@@ -1571,17 +1553,6 @@
     });
     $('#playerCollapse').addEventListener('click', () => setCollapsed(true));
     $('#playerMini').addEventListener('click', () => setCollapsed(false));
-
-    const startOnGesture = (e) => {
-      if (e.target instanceof Node && playerEl.contains(e.target)) return;
-      if (playerEl.classList.contains('needs-tap') && playState.want !== false) tryPlay(false);
-      document.removeEventListener('pointerdown', startOnGesture, true);
-      document.removeEventListener('keydown', startOnGesture, true);
-    };
-    document.addEventListener('pointerdown', startOnGesture, true);
-    document.addEventListener('keydown', startOnGesture, true);
-
-    if (playState.want) setTimeout(() => tryPlay(true), 350);
   }
 
   /* ---------- 启动 ---------- */
