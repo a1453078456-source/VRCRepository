@@ -1,5 +1,5 @@
 /* ============================================================
-   lll 的小站 · 交互逻辑
+   lll个人网站 · 交互逻辑
    ------------------------------------------------------------
    * 内容是静态的：data.js（图集 / 音乐）+ content.js（简介 / 文章）
    * 路由用 hash：#/ 欢迎页、#/profile、#/gallery、#/essays、#/essays/<slug>、#/can
@@ -78,7 +78,7 @@
   const IMAGES_RAW = (window.CUTE_IMAGES && typeof window.CUTE_IMAGES === 'object') ? window.CUTE_IMAGES : {};
   const IMAGE_BASE = IMAGES_RAW.imageBase || CONTENT.imageBase || 'material-library/image/';
   const MUSIC_BASE = IMAGES_RAW.musicBase || CONTENT.musicBase || 'material-library/music/';
-  const SITE_NAME = `${PROFILE.name || 'lll'} 的小站`;
+  const SITE_NAME = `${PROFILE.name || 'lll'}个人网站`;
 
   const QUOTES = [
     {
@@ -1141,7 +1141,7 @@
     opts = opts || {};
     state.route = route;
     closeMobileMenu();
-    document.title = `${TITLES[route.name] || '小站'} · ${SITE_NAME}`;
+    document.title = `${TITLES[route.name] || '个人网站'} · ${SITE_NAME}`;
 
     if (route.name === 'welcome') {
       setWelcomeMode(true);

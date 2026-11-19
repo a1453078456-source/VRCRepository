@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-lll 的小站 · 内容生成器
+lll个人网站 · 内容生成器
 -----------------------
 从 material-library/ 里的 Word 文档生成 assets/content.js：
 
@@ -226,7 +226,7 @@ def main():
         "musicBase": "material-library/music/",
     }
     body = (
-        "/* lll 的小站 · 内容清单 —— 由 tools/build_content.py 从 material-library 的 Word 文档自动生成，请勿手改。\n"
+        "/* lll个人网站 · 内容清单 —— 由 tools/build_content.py 从 material-library 的 Word 文档自动生成，请勿手改。\n"
         f"   最后生成：{payload['generatedAt']} · {len(essays)} 篇文章 */\n"
         "window.CUTE_CONTENT = "
         + json.dumps(payload, ensure_ascii=False, indent=2)

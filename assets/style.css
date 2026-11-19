@@ -1,5 +1,5 @@
 /* ============================================================
-   lll 的小站 · 样式
+   lll个人网站 · 样式
    纯手写 CSS，无外部依赖，可离线使用
    风格沿用原来的 CuteImage：粉紫极光、毛玻璃、圆角、小星光
    ============================================================ */
@@ -383,7 +383,6 @@ code {
   line-height: 1.8;
 }
 .welcome-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(24px, 3vw, 34px); }
-.welcome-hint { margin-top: 14px; font-size: 12.5px; color: var(--ink-faint); letter-spacing: .02em; }
 .welcome-rooms {
   margin-top: clamp(22px, 3vw, 32px);
   display: flex; flex-wrap: wrap; align-items: center;
@@ -849,6 +848,7 @@ code {
   margin: 0 auto;
   padding: clamp(34px, 4.6vw, 62px) clamp(16px, 3vw, 40px) 0;
 }
+.profile-section.quotes { padding-bottom: clamp(28px, 3.8vw, 54px); }
 
 /* 图集预览墙 */
 .peek-wall {
@@ -973,7 +973,7 @@ code {
 .gallery {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 clamp(16px, 3vw, 40px) 20px;
+  padding: 0 clamp(16px, 3vw, 40px) clamp(28px, 3.6vw, 48px);
 }
 .toolbar {
   display: flex;
@@ -1334,7 +1334,7 @@ code {
 .essays-wrap {
   max-width: 1180px;
   margin: 0 auto;
-  padding: 0 clamp(16px, 3vw, 40px);
+  padding: 0 clamp(16px, 3vw, 40px) clamp(28px, 3.6vw, 48px);
 }
 .essay-list { display: grid; gap: clamp(14px, 1.8vw, 20px); }
 .essay-card {
@@ -1806,24 +1806,6 @@ code {
   50% { height: 9px; }
 }
 
-/* ---------- 页脚 ---------- */
-.foot {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 8px clamp(16px, 3vw, 40px) 46px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-  font-size: 12.5px;
-  color: var(--ink-faint);
-  text-align: center;
-}
-.foot code { font-size: 11.5px; }
-.foot-dots { opacity: .5; }
-.foot-link { color: var(--ink-soft); border-bottom: 1px dotted var(--line-strong); padding-bottom: 1px; transition: color .2s; }
-.foot-link:hover { color: var(--ink); }
-
 /* ---------- 大图查看器 ---------- */
 .lb {
   position: fixed;
@@ -2129,8 +2111,6 @@ code {
   .quote-wall { grid-template-columns: 1fr; }
   .quote-note { text-align: left; }
   .player { width: min(286px, calc(100vw - 24px)); }
-  .foot { padding-bottom: 46px; }
-  body.player-expanded .foot { padding-bottom: 210px; }
 
   .profile-hero h1 { font-size: clamp(2.8rem, 12vw, 4rem); }
   .profile-art { min-height: 360px; }

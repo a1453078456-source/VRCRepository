@@ -1,7 +1,7 @@
-/* lll 的小站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。
-   最后生成：2026-11-18T22:52:21 · 共 10 张图 · 1 首音乐 */
+/* lll个人网站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。
+   最后生成：2026-11-20T00:19:57 · 共 10 张图 · 1 首音乐 */
 window.CUTE_IMAGES = {
-  "generatedAt": "2026-11-18T22:52:21",
+  "generatedAt": "2026-11-20T00:19:57",
   "count": 10,
   "totalBytes": 24158950,
   "imageBase": "material-library/image/",

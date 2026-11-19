@@ -1,7 +1,7 @@
 @echo off
 setlocal EnableExtensions
 chcp 65001 >nul
-title lll 的小站 - 重建素材
+title lll个人网站 - 重建素材
 cd /d "%~dp0"
 
 rem 找一个真的装了 Pillow 的 Python。
@@ -15,8 +15,8 @@ for %%C in ("py" "python" "%USERPROFILE%\.dsh\dsh-runtimes\dsh-primary-runtime\d
 
 if not defined PY goto nopillow
 
-echo [lll 的小站] Python: %PY%
-echo [lll 的小站] 正在重建缩略图、图集清单、个人简介和文章 ...
+echo [lll个人网站] Python: %PY%
+echo [lll个人网站] 正在重建缩略图、图集清单、个人简介和文章 ...
 echo.
 "%PY%" "tools\build_gallery.py"
 if errorlevel 1 goto buildfail
@@ -29,13 +29,13 @@ exit /b 0
 
 :buildfail
 echo.
-echo [lll 的小站] 重建的时候出了点问题，看看上面的报错再试一次。
+echo [lll个人网站] 重建的时候出了点问题，看看上面的报错再试一次。
 pause
 exit /b 1
 
 :nopillow
 echo.
-echo [lll 的小站] 没有找到装了 Pillow 的 Python。
+echo [lll个人网站] 没有找到装了 Pillow 的 Python。
 echo.
 echo 图集仍然可以看：新图片会直接用原图显示，只是没有更快的缩略图。
 echo 个人简介和文章也不会更新。

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-lll 的小站 · 图集素材生成器
+lll个人网站 · 图集素材生成器
 ---------------------------
 扫描 material-library/image/ 里的图片，生成：
   * thumbs/<slug>.webp   网格用缩略图（宽 720，体积约为原图 3%）
@@ -254,7 +254,7 @@ def main():
         "music": music,
     }
     body = (
-        "/* lll 的小站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。\n"
+        "/* lll个人网站 · 图集清单 —— 由 tools/build_gallery.py 自动生成，请勿手改。\n"
         f"   最后生成：{payload['generatedAt']} · 共 {payload['count']} 张图 · {len(music)} 首音乐 */\n"
         "window.CUTE_IMAGES = "
         + json.dumps(payload, ensure_ascii=False, indent=2)
